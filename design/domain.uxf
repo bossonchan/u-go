@@ -127,7 +127,7 @@ contains v</panel_attributes>
     </coordinates>
     <panel_attributes>lt=-
 m1=1
-m2=1
+m2=0..n
 collected by &gt;</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -183,7 +183,7 @@ m2=1
     </coordinates>
     <panel_attributes>lt=-
 m1=0..n
-m2=0..1
+m2=1
 &lt; create</panel_attributes>
     <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
   </element>
@@ -197,7 +197,7 @@ m2=0..1
     </coordinates>
     <panel_attributes>lt=-
 m1=1
-m2=1
+m2=0..n
 reserved by v</panel_attributes>
     <additional_attributes>10.0;100.0;10.0;10.0</additional_attributes>
   </element>
