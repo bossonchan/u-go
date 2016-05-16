@@ -3,12 +3,12 @@ package com.ugo.server.domain.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
 @Entity
 public class Reservation {
 	@Id
@@ -16,6 +16,8 @@ public class Reservation {
 	private Long id;
 	
 	private Date time;
+	
+	@Enumerated(value=EnumType.STRING)
 	private Status status;
 	
 	@ManyToOne
@@ -31,6 +33,14 @@ public class Reservation {
 	private Item item;
 	
 	public Reservation() {}
+	
+	public Reservation(Buyer buyer, Item item) {
+		this.time = new Date();
+		this.status = Status.PENDDING;
+		this.buyer = buyer;
+		this.item = item;
+		this.seller = item.getSeller();
+	}
 
 	public Long getId() {
 		return id;

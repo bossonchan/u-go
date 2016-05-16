@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,6 +27,8 @@ public class Item {
 	private float price;
 	private Date time;
 	private Category category;
+	
+	@Enumerated(value=EnumType.STRING)
 	private Status status;
 	
 	@OneToMany(mappedBy = "item", fetch = FetchType.LAZY)

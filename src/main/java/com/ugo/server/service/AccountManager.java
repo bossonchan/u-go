@@ -1,5 +1,7 @@
 package com.ugo.server.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,5 +62,26 @@ public class AccountManager {
 		} else {
 			return this.sellerRepo.save(seller);
 		}
+	}
+
+	public Seller getSellerFromSession(HttpSession session) {
+		if (!("seller".equals(session.getAttribute("SESS_ATTR_ROLE")))){
+			return null;
+		}
+		if (session.getAttribute("SESS_ATTR_USER") == null) {
+			return null;
+		}
+		return this.sellerRepo.findOne((Long)session.getAttribute("SESS_ATTR_USER"));
+	}
+	
+	public Buyer getBuyerFromSession(HttpSession session) {
+		
+		if (!("buyer".equals(session.getAttribute("SESS_ATTR_ROLE")))){
+			return null;
+		}
+		if (session.getAttribute("SESS_ATTR_USER") == null) {
+			return null;
+		}
+		return this.buyerRepo.findOne((Long)session.getAttribute("SESS_ATTR_USER"));
 	}
 }

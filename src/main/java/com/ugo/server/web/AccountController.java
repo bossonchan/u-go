@@ -45,7 +45,7 @@ public class AccountController {
 			throw new BadRequestException("Login failed, username or password is wrong");
 		}
 		
-		session.setAttribute(SESS_ATTR_USER, buyer);
+		session.setAttribute(SESS_ATTR_USER, buyer.getId());
 		session.setAttribute(SESS_ATTR_ROLE, "buyer");
 		return buyer;
 	}
@@ -53,13 +53,12 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/buyer/session")
 	public Buyer logoutAsBuyer(HttpServletRequest request){
 		HttpSession session = request.getSession();
-		Buyer buyer = (Buyer) session.getAttribute(SESS_ATTR_USER);
-		if (buyer == null) {
+		if (session.getAttribute(SESS_ATTR_USER) == null) {
 			throw new ConflictException("You have been logged out.");
 		}
 		session.setAttribute(SESS_ATTR_USER, null);
 		session.setAttribute(SESS_ATTR_ROLE, null);
-		return buyer;
+		return null;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/buyer")
@@ -94,7 +93,7 @@ public class AccountController {
 			throw new BadRequestException("Login failed, username or password is wrong");
 		}
 		
-		session.setAttribute(SESS_ATTR_USER, seller);
+		session.setAttribute(SESS_ATTR_USER, seller.getId());
 		session.setAttribute(SESS_ATTR_ROLE, "seller");
 		return seller;	
 	}
@@ -102,13 +101,12 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.DELETE, value = "/seller/session")
 	public Seller logoutAsSeller(HttpServletRequest request){
 		HttpSession session = request.getSession();
-		Seller seller = (Seller) session.getAttribute(SESS_ATTR_USER);
-		if (seller == null) {
+		if (session.getAttribute(SESS_ATTR_USER) == null) {
 			throw new ConflictException("You have been logged out.");
 		}
 		session.setAttribute(SESS_ATTR_USER, null);
 		session.setAttribute(SESS_ATTR_ROLE, null);
-		return seller;
+		return null;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/seller")

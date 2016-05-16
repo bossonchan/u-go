@@ -21,6 +21,54 @@ window.onload = function() {
       {}
     ],
 
+    "get-item": [
+      "GET",
+      "/items/1",
+      {}
+    ],
+
+    "reserve-item": [
+      "POST",
+      "/items/1/reservation",
+      {}
+    ],
+
+    "get-items": [
+      "GET",
+      "/items",
+      {}
+    ],
+
+    "get-buyer-reservations": [
+      "GET",
+      "/reservations",
+      {}
+    ],
+
+    "remove-reservation": [
+      "DELETE",
+      "/reservations/1",
+      {}
+    ],
+
+    "add-item-to-shopping-cart": [
+      "POST",
+      "/items/1/shoppingcart",
+      {}
+    ],
+
+    "get-shopping-cart-items": [
+      "GET",
+      "/shoppingcart",
+      {}
+    ],
+
+    "remove-item-from-shopping-cart":[
+      "DELETE",
+      "/shoppingcart/1",
+      {}
+    ],
+
     "register-as-seller" : [
       "POST",
       "/seller",
@@ -43,6 +91,30 @@ window.onload = function() {
       "POST",
       "/items",
       { name: "小米4手机", description: "九成新，便宜卖。", category: "ELECTRONICS", price: 2000 }
+    ],
+
+    "remove-item": [
+      "DELETE",
+      "/items/1",
+      {}
+    ],
+
+    "get-seller-items": [
+      "GET",
+      "/items",
+      {}
+    ],
+
+    "get-seller-reservations": [
+      "GET",
+      "/reservations",
+      {}
+    ],
+
+    "reject-reservation": [
+      "DELETE",
+      "/reservations/1",
+      {}
     ]
 
   };
@@ -91,5 +163,30 @@ window.onload = function() {
       $display.html(JSON.stringify(error.responseJSON, " ", 4));
     }
   }
+
+  // handle upload file
+  var form = document.getElementById("uploadFileForm");
+  var input = document.getElementById("uploadFileInput");
+  var button = document.getElementById("uploadFileBtn");
+
+  button.onclick = function(event) {
+    event.preventDefault();
+    button.innerHTML = "uploading..";
+    var files =  input.files;
+    var file  = files[0];
+    var formdata = new FormData();
+    formdata.append("file", file, file.name);
+    formdata.append("name", "name");
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/photos", true);
+    xhr.send(formdata);
+    xhr.onload = function () {
+      if (xhr.status == 200) {
+        console.log(xhr)
+        button.innerHTML = "upload";
+      }
+    };
+  };
+
 
 };

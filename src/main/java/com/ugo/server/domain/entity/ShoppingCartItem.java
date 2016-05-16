@@ -3,6 +3,8 @@ package com.ugo.server.domain.entity;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -16,6 +18,9 @@ public class ShoppingCartItem {
 	
 	private Date time;
 	
+	@Enumerated(value=EnumType.STRING)
+	private Status status;
+	
 	@ManyToOne
 	@JoinColumn(name = "buyerId")
 	private Buyer buyer;
@@ -25,6 +30,13 @@ public class ShoppingCartItem {
 	private Item item;
 	
 	public ShoppingCartItem() {}
+
+	public ShoppingCartItem(Buyer buyer, Item item) {
+		this.time = new Date();
+		this.buyer = buyer;
+		this.item = item;
+		this.status = Status.ACTIVE;
+	}
 
 	public Long getId() {
 		return id;
@@ -56,6 +68,14 @@ public class ShoppingCartItem {
 
 	public void setItem(Item item) {
 		this.item = item;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 	
