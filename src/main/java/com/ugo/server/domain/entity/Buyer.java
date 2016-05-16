@@ -2,6 +2,7 @@ package com.ugo.server.domain.entity;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,17 +10,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 @Entity
-public class Buyer{
+public class Buyer implements Serializable{
+	
+	private static final long serialVersionUID = -3585847037915481984L;
+
 	@GeneratedValue
 	@Id
 	private Long id;
 	
+	@Column(length=30, unique = true, nullable = false)
 	private String username;
-	@JsonIgnore
+	
+	@Column(length=16, nullable = false)
+//	@JsonIgnore
 	private String password;
 	
+	@Column(nullable = false)
 	private String phoneNumber;
 	
 	@OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)

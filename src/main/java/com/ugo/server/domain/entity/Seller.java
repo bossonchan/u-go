@@ -1,5 +1,6 @@
 package com.ugo.server.domain.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,13 +12,15 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Seller {
+public class Seller implements Serializable{
+	private static final long serialVersionUID = -3794402240715113475L;
+
 	@Id
 	@GeneratedValue
 	private Long id;
 	
 	private String username;
-	@JsonIgnore
+//	@JsonIgnore
 	private String password;
 	private String identity;
 	private String phoneNumber;
