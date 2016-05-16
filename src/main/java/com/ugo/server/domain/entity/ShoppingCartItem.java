@@ -41,6 +41,22 @@ public class ShoppingCartItem {
 	public void setTime(Date time) {
 		this.time = time;
 	}
+
+	public Buyer getBuyer() {
+		return buyer;
+	}
+
+	public void setBuyer(Buyer buyer) {
+		this.buyer = buyer;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
 	
 	
 }

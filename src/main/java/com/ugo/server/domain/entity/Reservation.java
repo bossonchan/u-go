@@ -55,5 +55,29 @@ public class Reservation {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+	public Buyer getBuyer() {
+		return buyer;
+	}
+
+	public void setBuyer(Buyer buyer) {
+		this.buyer = buyer;
+	}
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
 	
 }

@@ -43,6 +43,22 @@ public class ItemPhoto {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
+	}
 	
 	
 	

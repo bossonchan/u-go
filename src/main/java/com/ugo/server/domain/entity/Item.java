@@ -99,6 +99,46 @@ public class Item {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	public List<ShoppingCartItem> getShoppingCartItems() {
+		return shoppingCartItems;
+	}
+
+	public void setShoppingCartItems(List<ShoppingCartItem> shoppingCartItems) {
+		this.shoppingCartItems = shoppingCartItems;
+	}
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
+	}
+
+	public List<ItemPhoto> getItemPhotos() {
+		return itemPhotos;
+	}
+
+	public void setItemPhotos(List<ItemPhoto> itemPhotos) {
+		this.itemPhotos = itemPhotos;
+	}
 	
 }
 

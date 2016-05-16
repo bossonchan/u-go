@@ -82,6 +82,30 @@ public class Seller {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public List<ItemPhoto> getItemPhotos() {
+		return itemPhotos;
+	}
+
+	public void setItemPhotos(List<ItemPhoto> itemPhotos) {
+		this.itemPhotos = itemPhotos;
+	}
 	
 	
 }

@@ -69,6 +69,22 @@ public class Buyer{
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	public List<ShoppingCartItem> getShoppingCartItems() {
+		return shoppingCartItems;
+	}
+
+	public void setShoppingCartItems(List<ShoppingCartItem> shoppingCartItems) {
+		this.shoppingCartItems = shoppingCartItems;
+	}
+
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
 	
 	
 }
