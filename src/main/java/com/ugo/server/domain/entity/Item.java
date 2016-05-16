@@ -1,5 +1,6 @@
 package com.ugo.server.domain.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Item {
 	private Seller seller;
 	
 	@OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
-	private List<ItemPhoto> itemPhotos;
+	private List<ItemPhoto> itemPhotos = new ArrayList<ItemPhoto>();
 	
 	public Item() {}
 	
