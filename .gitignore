@@ -4,3 +4,5 @@
 .settings/
 dump.rdb
 static/uploads/
+static/front-end-project/dist/
+static/front-end-project/node_modules/
