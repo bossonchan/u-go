@@ -6,9 +6,15 @@ Note: 该项目为**软件设计综合实验**课程作业
 
 ## 安装和使用
 
+### 使用Maven构建并启动
+
 1. 确保系统已经正确安装了[Maven](http://maven.apache.org/download.cgi)
 
 2. 使用`mvn spring-boot:run`命令可以自动安装必要的依赖，并且启动服务器
+
+### 使用以构建的jar启动
+
+1. 项目目录下已经完成了构建，直接使用`java -jar ugo-1.0.0.jar`命令启动项目即可
 
 ## 前端项目
 
