@@ -14,12 +14,19 @@ public interface ItemRepository extends JpaRepository<Item, Long>{
 	@Query(value = 
 			"select i from Item i "
 			+ "left join i.seller s "
-			+ "where s.id = :sellerId")
+			+ "where s.id = :sellerId "
+      + "and i.status = 'ACTIVE'")
 	List<Item> findItemsPostedBySeller(@Param("sellerId") Long sellerId);
 
 	@Query(value = 
 			"select i from Item i "
 			+ "where i.status = 'ACTIVE'")
 	List<Item> findActiveItems();
+
+	@Query(value =
+			"select i from Item i "
+			+ "where i.status = 'ACTIVE' "
+			+ "and i.name like %:search%")
+	List<Item> findActiveItemsBySearch(@Param("search") String search);
 
 }

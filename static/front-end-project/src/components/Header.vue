@@ -3,11 +3,11 @@
   <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
   <a class="pure-menu-heading" v-link="{ path: '/home' }">U-Go</a>
 
-  <ul class="pure-menu-list" v-if="isLogin && role">
-    <li class="pure-menu-item"><a v-link="{ path: '/home' }" class="pure-menu-link">首页</a></li>
-    <li class="pure-menu-item"><a v-link="{ path: '/seller' }" class="pure-menu-link" v-if="role == 'seller'">个人中心</a></li>
-    <li class="pure-menu-item"><a v-link="{ path: '/buyer' }" class="pure-menu-link"  v-if="role == 'buyer'" >个人中心</a></li>
-    <li class="pure-menu-item"><a @click.stop.prevent="logout" class="pure-menu-link"  >{{ username }}（登出）</a></li>
+  <ul class="pure-menu-list" v-if="global.isLogin && global.role">
+    <li class="pure-menu-item"><a v-link="{ path: '/home' }" class="pure-menu-link" v-if="global.role != 'seller'">首页</a></li>
+    <li class="pure-menu-item"><a v-link="{ path: '/seller' }" class="pure-menu-link" v-if="global.role == 'seller'">个人中心</a></li>
+    <li class="pure-menu-item"><a v-link="{ path: '/buyer' }" class="pure-menu-link"  v-if="global.role == 'buyer'" >个人中心</a></li>
+    <li class="pure-menu-item"><a @click.stop.prevent="sendLogoutRequest" class="pure-menu-link"  >{{ global.username }}（登出）</a></li>
   </ul>
 
   <ul class="pure-menu-list" v-else>
@@ -22,15 +22,57 @@
 <script>
 
 import { store } from '../store'
+import { router } from '../router'
 
 export default {
+  ready () {
+    var that = this
+    this.$http.get("/buyer/session", {}).then(
+      (response) => {
+        that.global.role = "buyer"
+        that.global.isLogin = true
+        that.global.username = response.data.username
+      },
+      (response) => {}
+    )
+    this.$http.get("/seller/session", {}).then(
+      (response) => {
+        that.global.role = "seller"
+        that.global.isLogin = true
+        that.global.username = response.data.username
+      },
+      (response) => {}
+    )
+  },
+
 
   methods: {
-    logout: (event) => { store.logout() }
+    sendLogoutRequest() {
+      if (!this.global.isLogin) return
+
+      var that = this
+      var url = ""
+
+      if (this.global.role == "seller") { url = "/seller/session" }
+      if (this.global.role == "buyer") { url = "/seller/session" }
+      if (!url) return
+
+      this.$http.delete(url).then(
+        (response) => {
+          that.global.role = ""
+          that.global.isLogin = false
+          that.global.username = ""
+          router.go("/home")
+        },
+        (response) => {}
+      )
+    }
   },
 
   data () {
-    return store
+    return {
+      global: store
+    }
   }
 }
 

@@ -1,18 +1,19 @@
 <template>
-<div class="item-detail pure-g">
+<div class="item-detail pure-g" v-if="item">
 
   <div class="pure-u-1-3">
     <div class="item-gallery">
-      <img class="gallery-display" :src="item.photos[0].url" >
+      <img class="gallery-display" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" >
       <div class="gallery-selection">
-        <img class="pure-img" :src="photo.url" v-for="photo of item.photos">
+        <img class="pure-img" :src="photo.url" v-for="photo of item.itemPhotos">
       </div>
     </div>
   </div>
 
   <div class="pure-u-2-3">
     <div class="item-info">
-      <div class="name">{{ item.name }}</div>
+      <div class="name">{{ item.name }} <span v-show="item.status == 'INACTIVE'" style="color:red" >（已下架）</span></div>
+      <div class="category">分类：{{ global.categories[item.category] }}</div>
       <div class="description">{{ item.description }}</div>
       <div class="time">
         发布时间：
@@ -26,42 +27,75 @@
       </div>
     </div>
 
-    <div class="item-operation">
-      <button class="pure-button button-success">立即预约</button>
-      <button class="pure-button button-warning">加入购物车</button>
+    <div class="item-operation" v-show="!(global.isLogin && global.role == 'seller')">
+      <button @click.stop.prevent="sendReservationRequest" class="pure-button button-success">立即预订</button>
+      <button @click.stop.prevent="addToShoppingCart" class="pure-button button-warning" >加入购物车</button>
     </div>
 
   </div>
 
 </div>
+<div style="text-align:center;" v-else>
+  <p style="">找不到该产品！</p>
+  <a v-link="{ path: '/home' }">回到首页</a>
+</div>
 </template>
 
 <script>
 import { store } from '../store'
+import { router } from '../router'
 
 export default {
+  ready() {
+    var params = this.$route.params || {}
+    var itemId = params.itemId || ""
+    var that   = this
+
+    this.$http.get("/items/" + itemId).then(
+      (response) => {
+        that.item = response.data
+      },
+      (response) => {}
+    )
+  },
+
+  methods: {
+    sendReservationRequest () { 
+      if (!this.global.isLogin) return router.go('/login')
+      if (!this.item) return
+
+      var that = this
+      this.$http.post("/items/" + this.item.id + "/reservation").then(
+        (response) => { 
+          that.global.message = "已成功发送预订请求"
+        },
+        (response) => {
+           that.global.message = response.data.message
+        }
+      )
+    },
+    addToShoppingCart () {
+      if (!this.global.isLogin) return router.go('/login')
+      if (!this.item) return
+
+      var that = this
+      this.$http.post("/items/" + this.item.id + "/shoppingcart").then(
+        (response) => {
+          that.global.message = "添加成功！"
+        },
+        (response) => {
+          that.global.message = response.data.message
+        }
+      )
+    }
+  },
+
   data () {
     return {
-      cu: store,
-
-      item: {
-        id: 1,
-        name: "小米4手机",
-        description: "米手机4采用了高通骁龙801手机处理器，内含四个Krait 400 2.5GHz 处理核心。运算速度提升14%，性能更强大。它能出色地同时处理多个复杂任务。它的强大还体现在图像处理器速度较前代提升近一 倍，这让拍照与录像都有了更多玩法和可能性。内含一个 Hexagon DSP 核心，专门以更低功耗运行电影、音乐、拍照等任务。这意味着在性能更强大的同时，手机续航都比以往更加持久耐用。",
-        price: 1999.99,
-        time : 1463488299698,
-        photos: [
-          { url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg" },
-          { url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg" },
-          { url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg" },
-          { url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg" },
-        ],
-        seller: {
-          username: "Shin",
-          phoneNumber: "13580512947"
-        }
-      }
+      global: store,
+      item: null
     }
+
   }
 }
 </script>

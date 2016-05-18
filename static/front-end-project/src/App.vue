@@ -9,7 +9,7 @@
     <div id="footer">
     	<p> Contact Me: <a href="mailto:bossonchan@gmail.com">bossonchan@gmail.com<a> </p>
     </div>
-
+    <dialog-component></dialog-component>
   <div>
 </template>
 
@@ -21,10 +21,15 @@ import Seller from './components/Seller.vue'
 import Buyer from './components/Buyer.vue'
 import Post from './components/Post.vue'
 import HeaderComponent from './components/Header.vue'
+import DialogComponent from './components/Dialog.vue'
 import { router } from './router'
 import { store } from './store'
 
 router.map({
+  '/': {
+    component: Home
+  },
+
   '/home': {
     component: Home
   },
@@ -57,7 +62,7 @@ router.map({
 
 export default {
   components: {
-    Home, Login, Item, Seller, Buyer, Post, HeaderComponent
+    Home, Login, Item, Seller, Buyer, Post, HeaderComponent, DialogComponent
   }
 }
 </script>

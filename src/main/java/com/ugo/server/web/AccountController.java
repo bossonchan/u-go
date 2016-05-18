@@ -32,13 +32,23 @@ public class AccountController {
 	}
 	
 	// ----------- Buyer APIs ----------
-	
+  @RequestMapping(method = RequestMethod.GET, value = "/buyer/session") 
+  public Buyer getCurrentBuyer(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    Buyer buyer = this.accountManager.getBuyerFromSession(session);
+    if (buyer == null) {
+      throw new UnauthorizedException("你还没有以买家身份登录！");
+    } else  {
+      return buyer;
+    }
+  }
+
 	@RequestMapping(method = RequestMethod.POST, value = "/buyer/session")
 	public Buyer loginAsBuyer(@RequestBody Buyer buyer,  HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		if (session.getAttribute(SESS_ATTR_USER) != null) {
+    if (this.accountManager.getBuyerFromSession(session) != null) {
 			throw new ConflictException("You have been logged in.");
-		}
+    }
 		
 		buyer =  this.accountManager.loginAsBuyer(buyer);
 		if (buyer == null) {
@@ -63,13 +73,13 @@ public class AccountController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/buyer")
 	public Buyer registerAsBuyer(@RequestBody Buyer buyer) {
-		if (buyer.getPassword() == null) {
+		if (buyer.getPassword() == null || "".equals(buyer.getPassword())) {
 			throw new BadRequestException("password required");
 		}
-		if (buyer.getUsername() == null) {
+		if (buyer.getUsername() == null || "".equals(buyer.getUsername())) {
 			throw new BadRequestException("username required");
 		}
-		if (buyer.getPhoneNumber() == null) {
+		if (buyer.getPhoneNumber() == null || "".equals(buyer.getPhoneNumber())) {
 			throw new BadRequestException("phoneNumber required");
 		}
 		buyer = this.accountManager.registerAsBuyer(buyer);
@@ -80,11 +90,21 @@ public class AccountController {
 	}
 	
 	// --------- Seller APIs ----------
+  @RequestMapping(method = RequestMethod.GET, value = "/seller/session") 
+  public Seller getCurrentSeller(HttpServletRequest request) {
+    HttpSession session = request.getSession();
+    Seller seller = this.accountManager.getSellerFromSession(session);
+    if (seller == null) {
+      throw new UnauthorizedException("你还没有以卖家身份登录！");
+    } else  {
+      return seller;
+    }
+  }
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/seller/session")
 	public Seller loginAsSeller(@RequestBody Seller seller,  HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		if (session.getAttribute(SESS_ATTR_USER) != null) {
+		if (this.accountManager.getSellerFromSession(session) != null) {
 			throw new ConflictException("You have been logged in.");
 		}
 		

@@ -104,4 +104,8 @@ public class ItemManager {
 		shoppingCartItem.setStatus(Status.REMOVED);
 		return this.shoppingCartItemRepo.save(shoppingCartItem);
 	}
+
+	public List<Item> getActiveItemsAccordingToSearch(String search) {
+		return this.itemRepo.findActiveItemsBySearch(search);
+	}
 }

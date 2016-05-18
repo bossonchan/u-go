@@ -8,6 +8,9 @@
       <div class="reservations">
         <h1>待处理请求</h1>
         <div class="container">
+          <div v-if="reservations.length == 0">
+            <p>暂无任何预订请求！</p>
+          </div>
           <template v-for="reservation of reservations">
             <div class="reservation">
               <div>
@@ -29,7 +32,10 @@
         <h1> 已发布物品 </h1>
 
         <div class="container">
-          <template v-for="item of items">
+          <div v-if="items.length == 0">
+            <p>暂无发布任何物品！</p>
+          </div>
+          <template v-for="(index, item) of items">
             <div class="item-posted">
               <div class="item-summary">
                 <a v-link="'/items/' + item.id">{{ item.name }}</a>
@@ -41,18 +47,17 @@
                     <span>{{ (new Date(item.time)).getHours()    }}</span>:<span>{{ (new Date(item.time)).getMinutes()  }}</span>
                   </div>
                   <div>
-                    <button class="pure-button button-error">下架</button>
+                    <button @click.stop.prevent="removeItem(index)" class="pure-button button-error">下架</button>
                   </div>
                 </div>
               </div>
               <div class="item-image">
-                <img class="pure-img" :src="item.photos[0].url" >
+                <img class="pure-img" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" >
               </div>
             </div>
           </template>
         </div>
       </div>
-
     </div>
 
     <div class="pure-u-1-4">
@@ -66,29 +71,53 @@
 
 <script>
 import { store } from '../store'
+import { router } from '../router'
+
 export default {
+
+  ready () {
+    var that = this
+
+    this.$http.get("/reservations").then(
+      (response) => { 
+        that.reservations = response.data
+      },
+      (response) => {
+        let { status } = response
+        if (status == 401 || status == 403) {
+          router.go("/login")
+        }
+      }
+    )
+
+    this.$http.get("/items").then(
+      (response) => { that.items = response.data },
+      (response) => { }
+    )
+  },
+
+  methods: {
+    removeItem(index) { 
+       var that = this
+       var item = this.items[index]
+       this.$http.delete("/items/" + item.id).then(
+         (response) => { 
+           that.items.splice(index, 1)
+         },
+         (response) => { 
+           that.global.message = response.data.message
+         }
+       )
+    }
+  },
+
   data () {
     return {
-      cu: store,
+      global: store,
 
-      items: [
-        { id: 1, name: "小米4手机", price: 1999.99, time: 1463488299698, photos: [{ url:  "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}]},
-        { id: 1, name: "小米4手机", price: 1999.99, time: 1463488299698, photos: [{ url:  "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}]},
-        { id: 1, name: "小米4手机", price: 1999.99, time: 1463488299698, photos: [{ url:  "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}]},
-        { id: 1, name: "小米4手机", price: 1999.99, time: 1463488299698, photos: [{ url:  "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}]},
-      ],
+      items: [],
 
-      reservations: [
-        {
-          id : 1,
-          item: { id: 1, name: "小米4手机", price: 1999.99, time: 1463488299698, photos: [{ url:  "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}]},
-          buyer: {
-            username: "Shin",
-            phoneNumber: "13580512947"
-          },
-          time: 1463488299698
-        }
-      ]
+      reservations: [ ]
     }
   }
 }

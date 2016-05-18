@@ -14,7 +14,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 			"select r from Reservation r "
 			+ "left join r.seller s "
 			+ "where s.id = :sellerId "
-			+ "and r.status != 'INACTIVE'")
+			+ "and r.status != 'INACTIVE' "
+      + "and r.status != 'REMOVED'")
 	List<Reservation> findReservationsSentToSeller(@Param("sellerId") Long sellerId);
 
 	@Query(value = 

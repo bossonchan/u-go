@@ -15,7 +15,7 @@
 
   <template  v-for="item of items">
     <a class="item" v-link="'/items/' + item.id">
-      <img class="pure-img" :src="item.photos[0].url" :alt="item.name">
+      <img class="pure-img" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" :alt="item.name">
       <div>{{ item.name }}</div>
       <div>{{ item.price }}元</div>
     </a>
@@ -28,25 +28,37 @@
 import { store } from '../store'
 
 export default {
+  ready () {
+    var that = this
+
+    this.$http.get("/items").then(
+      (response) => {
+        that.items = response.data
+      },
+      (response) => {}
+    )
+  },
+
   methods: {
     search () {
-      this.items = [];
+      var that = this
+      this.$http.get("/items", { search: this.input }).then(
+        (response) => {
+          that.items = response.data
+        },
+        (response) => {
+          that.global.message = response.data.message
+        }
+      )
     }
   },
 
   data () {
     return { 
-      input: "",
+      global: store,
 
-      cu: store,
-      items: [
-        { id: 1, name: "小米4手机", price: 1999.99, photos: [{ url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}] },
-        { id: 2, name: "小米4手机", price: 1999.99, photos: [{ url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}] },
-        { id: 3, name: "小米4手机", price: 1999.99, photos: [{ url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}] },
-        { id: 4, name: "小米4手机", price: 1999.99, photos: [{ url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}] },
-        { id: 5, name: "小米4手机", price: 1999.99, photos: [{ url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}] },
-        { id: 6, name: "小米4手机", price: 1999.99, photos: [{ url: "http://www.isport123.com/images/ovygy33bmqxhc2lhovxs4y3pnu/news/20150925/63351443172946.jpg"}] },
-      ]
+      input: "",
+      items: []
     }
   }
 }

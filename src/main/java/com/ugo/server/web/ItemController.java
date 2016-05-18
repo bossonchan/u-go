@@ -199,10 +199,10 @@ public class ItemController {
 			throw new UnauthorizedException("You should logged in as seller");
 		}
 		
-		if (item.getName() == null) {
+		if (item.getName() == null || "".equals(item.getName())) {
 			throw new BadRequestException("name required");
 		}
-		if (item.getDescription() == null) {
+		if (item.getDescription() == null || "".equals(item.getDescription())) {
 			throw new BadRequestException("description required");
 		}
 		if (item.getCategory() == null) {
@@ -234,13 +234,19 @@ public class ItemController {
 	// ----- same API entry, different behavior according to role ----
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/items")
-	public List<Item> getItems(HttpServletRequest request) {
+	public List<Item> getItems(@RequestParam(name = "search", defaultValue = "", required = false) String search,  HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Seller seller = this.accountManager.getSellerFromSession(session);
 		if ("seller".equals(session.getAttribute("SESS_ATTR_ROLE")) && seller != null){
 			return this.itemManager.getSellerItems(seller);
 		} else {
-			return this.itemManager.getActiveItems();
+			log.info("search: " + search);
+			if ("".equals(search)) {
+				return this.itemManager.getActiveItems();				
+			} else {
+				return this.itemManager.getActiveItemsAccordingToSearch(search);
+			}
+			
 		}
 	}
 	
