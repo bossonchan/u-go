@@ -240,7 +240,6 @@ public class ItemController {
 		if ("seller".equals(session.getAttribute("SESS_ATTR_ROLE")) && seller != null){
 			return this.itemManager.getSellerItems(seller);
 		} else {
-			log.info("search: " + search);
 			if ("".equals(search)) {
 				return this.itemManager.getActiveItems();				
 			} else {
