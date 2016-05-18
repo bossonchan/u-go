@@ -90,7 +90,7 @@ window.onload = function() {
     "post-item": [
       "POST",
       "/items",
-      { name: "小米4手机", description: "九成新，便宜卖。", category: "ELECTRONICS", price: 2000 }
+      { name: "小米4手机", description: "九成新，便宜卖。", category: "ELECTRONICS", price: 2000, itemPhotos: [{ url: '/uploads/test.jpg' }] }
     ],
 
     "remove-item": [

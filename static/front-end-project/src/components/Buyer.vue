@@ -34,7 +34,7 @@
 
         <template v-for="(index, scitem) of shoppingCartItems">
           <div class="shopping-cart-item">
-            <img class="pure-img" :src="scitem.item.itemPhotos.length > 0 ?scitem.item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" >
+            <img class="pure-img" :src="scitem.item.itemPhotos.length > 0 ?scitem.item.itemPhotos[0].url : global.defaultPhoto" >
             <div>
               <div class="name" >
                 <a v-link="'/items/' + scitem.item.id">{{ scitem.item.name }}</a>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ugo.server.domain.entity.Buyer;
 import com.ugo.server.domain.entity.Item;
+import com.ugo.server.domain.entity.ItemPhoto;
 import com.ugo.server.domain.entity.Reservation;
 import com.ugo.server.domain.entity.Seller;
 import com.ugo.server.domain.entity.ShoppingCartItem;
@@ -40,6 +41,9 @@ public class ItemManager {
 		item.setSeller(seller);
 		item.setTime(new Date());
 		item.setStatus(Status.ACTIVE);
+		for (ItemPhoto itemPhoto : item.getItemPhotos()) {
+			itemPhoto.setItem(item);	
+		}
 		return this.itemRepo.save(item);
 	}
 

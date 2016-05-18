@@ -15,7 +15,7 @@
 
   <template  v-for="item of items">
     <a class="item" v-link="'/items/' + item.id">
-      <img class="pure-img" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" :alt="item.name">
+      <img class="pure-img" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : global.defaultPhoto" :alt="item.name">
       <div>{{ item.name }}</div>
       <div>{{ item.price }}元</div>
     </a>

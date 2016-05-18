@@ -6,6 +6,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPhoto {
 	@Id
@@ -16,11 +18,8 @@ public class ItemPhoto {
 	
 	@ManyToOne
 	@JoinColumn(name = "itemId")
+	@JsonIgnore
 	private Item item;
-	
-	@ManyToOne
-	@JoinColumn(name = "seller")
-	private Seller seller;
 	
 	public ItemPhoto() {}
 	
@@ -51,15 +50,6 @@ public class ItemPhoto {
 	public void setItem(Item item) {
 		this.item = item;
 	}
-
-	public Seller getSeller() {
-		return seller;
-	}
-
-	public void setSeller(Seller seller) {
-		this.seller = seller;
-	}
-	
 	
 	
 }

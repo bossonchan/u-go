@@ -190,11 +190,9 @@ public class ItemController {
 	public Item postItem(@RequestBody Item item, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		Seller seller = this.accountManager.getSellerFromSession(session);
-
 		if (!("seller".equals(session.getAttribute("SESS_ATTR_ROLE")))) {
 			throw new ForbiddenException("Only seller can create item");
-		}
-		
+		}	
 		if (seller == null) {
 			throw new UnauthorizedException("You should logged in as seller");
 		}

@@ -3,9 +3,9 @@
 
   <div class="pure-u-1-3">
     <div class="item-gallery">
-      <img class="gallery-display" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" >
+      <img class="gallery-display" :src="currentDisplay" >
       <div class="gallery-selection">
-        <img class="pure-img" :src="photo.url" v-for="photo of item.itemPhotos">
+        <img @click="choosePhoto(index)" class="pure-img" :src="photo.url" v-for="(index, photo) of item.itemPhotos">
       </div>
     </div>
   </div>
@@ -54,12 +54,20 @@ export default {
     this.$http.get("/items/" + itemId).then(
       (response) => {
         that.item = response.data
+        if (that.item.itemPhotos.length > 0) {
+          that.currentDisplay = that.item.itemPhotos[0].url
+        }
       },
       (response) => {}
     )
   },
 
   methods: {
+    choosePhoto(index) { 
+      var photo = this.item.itemPhotos[index]
+      this.currentDisplay = photo.url
+    },
+
     sendReservationRequest () { 
       if (!this.global.isLogin) return router.go('/login')
       if (!this.item) return
@@ -93,6 +101,9 @@ export default {
   data () {
     return {
       global: store,
+
+      currentDisplay: store.defaultPhoto,
+
       item: null
     }
 
@@ -113,6 +124,10 @@ export default {
   overflow: hidden;
 }
 
+.gallery-display {
+  border-bottom: 1px solid #ccc;
+}
+
 .item-gallery .gallery-display {
   display: block;
   width: 100%;
@@ -120,8 +135,8 @@ export default {
 
 .item-gallery .gallery-selection {
   display: block;
-
   overflow: hidden;
+  margin: 10px;
 }
 
 .gallery-selection > img {
@@ -130,7 +145,7 @@ export default {
   width: auto;
   height: 50px;
 
-  margin: 5px 5px 5px 0;
+  margin: 5px;
   float: left;
 
   cursor: pointer;

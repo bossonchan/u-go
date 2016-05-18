@@ -33,10 +33,6 @@ public class Seller implements Serializable{
 	@JsonIgnore
 	private List<Item> items;
 	
-	@OneToMany(mappedBy = "seller", fetch = FetchType.LAZY)
-	@JsonIgnore
-	private List<ItemPhoto> itemPhotos;
-	
 	public Seller() {}
 	
 	public Seller(String username, String password, String identity, String phoneNumber) {
@@ -102,13 +98,4 @@ public class Seller implements Serializable{
 		this.items = items;
 	}
 
-	public List<ItemPhoto> getItemPhotos() {
-		return itemPhotos;
-	}
-
-	public void setItemPhotos(List<ItemPhoto> itemPhotos) {
-		this.itemPhotos = itemPhotos;
-	}
-	
-	
 }

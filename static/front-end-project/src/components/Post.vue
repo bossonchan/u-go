@@ -1,7 +1,8 @@
 <template>
 <div class="post-item">
   <div class="pure-g">
-    <div class="pure-u-1-4"></div>
+    <div class="pure-u-1-4">
+    </div>
     <div class="pure-u-1-2">
       <form class="pure-form pure-form-stacked">
         <fieldset>
@@ -26,11 +27,25 @@
             <option value="FURNITURES">{{ global.categories["FURNITURES"] }}</option>
             <option value="OTHER">{{ global.categories["OTHER"] }}</option>
           </select>
+
+          <label for="item-photos">上传图片</label>
+          <div class="item-photos">
+            <div class="upload-area">
+              <div class="upload-content">+</div>
+              <input @change.stop.prevent="uploadPhoto($event)" type="file">
+            </div>
+            <div class="upload-photos">
+              <div class="upload-photo-container" v-for="photo of itemPhotos">
+                <img class="pure-img" :src="photo.url" >
+              </div>
+            </div>
+          </div>
           <button @click.stop.prevent="postItem" class="pure-button pure-button-primary">发布物品</button>
         </fieldset>
       </form>
     </div>
-    <div class="pure-u-1-4"></div>
+    <div class="pure-u-1-4">
+    </div>
   </div>
 </div>
 
@@ -55,13 +70,32 @@ export default  {
     )
   },
   methods: {
+    uploadPhoto(event) { 
+      var that  = this
+      var input = event.target || event.srcElement
+      var file  = input.files[0]
+      if (!file) return
+
+      var formData = new FormData()
+      formData.append("file", file, file.name)
+      this.$http.post("/photos", formData).then(
+        (response) => {
+          that.itemPhotos.push({ url: response.data.url })
+        },
+        (response) => {
+          that.global.message = "上传图片失败！"
+        }
+      )
+    },
+
     postItem () {
       var that = this
       var data = {
         name: this.itemName,
         description: this.itemDesc,
         price: this.itemPrice,
-        category: this.itemCategory
+        category: this.itemCategory,
+        itemPhotos: this.itemPhotos
       }
       this.$http.post("/items", data).then(
         (response) => {
@@ -82,6 +116,7 @@ export default  {
       itemDesc: "",
       itemPrice: "",
       itemCategory: "",
+      itemPhotos: [],
 
       global: store
     }
@@ -97,6 +132,68 @@ export default  {
 
 .post-item  form  button {
   float: right;
+}
+
+.item-photos {
+  display: block;
+}
+
+.upload-area {
+  display: block;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.upload-content {
+  display: block;
+  width: 100px;
+  height: 100px;
+
+  line-height: 100px;
+  text-align: center;
+  font-size: 50px;
+  color: #2d3e50;
+  background: #ddd;
+  cursor: pointer;
+}
+
+.upload-content:hover {
+  background: #ccc;
+}
+
+.upload-content:active {
+  background: #bbb;
+}
+
+.upload-area > input[type=file] {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100px;
+  height: 100px;
+
+  opacity: 0;
+  cursor: pointer;
+
+}
+
+.upload-photos {
+  display: block;
+}
+
+.upload-photo-container {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+}
+
+.upload-photo-container > img {
+  display: block;
+  width: 100px;
+  height: auto;
+  vertical-align: middle;
 }
 
 </style>

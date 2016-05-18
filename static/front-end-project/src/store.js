@@ -4,6 +4,8 @@ var store = {
 
   message: "",
 
+  defaultPhoto: "/default.jpg",
+
   categories: {
     "CLOTHES": "衣服/裤子/鞋子/背包",
     "COSMETICS": "化妆品/个人护理",

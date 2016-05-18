@@ -52,7 +52,7 @@
                 </div>
               </div>
               <div class="item-image">
-                <img class="pure-img" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : '/uploads/1463411943380.jpg'" >
+                <img class="pure-img" :src="item.itemPhotos.length > 0 ? item.itemPhotos[0].url : global.defaultPhoto" >
               </div>
             </div>
           </template>
